@@ -14,7 +14,17 @@
 
 An Ansible playbook to install and configure PiHole on a server based on Debian/Ubuntu.
 
+This Ansible playbook is designed for deploying Pi-hole, a powerful DNS and ad-blocking service. Pi-hole not only blocks unwanted ads but also provides a range of configuration options for DNS settings.
+
+The playbook leverages predefined roles, with specific details explained in the 'install_pihole' role, to simplify the installation and configuration process. With this playbook, you can customize various aspects of Pi-hole, including setting an admin web interface password, defining CNAME and AAAA records, and configuring basic parameters.
+
+The playbook is structured to be flexible, allowing you to tailor Pi-hole deployments to your specific needs. Whether you want to enhance your network's security, reduce unwanted advertisements, or have fine-grained control over DNS settings, this playbook streamlines the process.
+
+Using Ansible alongside this playbook makes deploying Pi-hole consistent and efficient across your infrastructure. It ensures that your DNS and ad-blocking service is set up with your preferred configurations, enhancing network privacy and performance.
+
 ## Deployment diagramm
+
+Deployment diagramm is not applicable.
 
 ## Tests and simulations
 
@@ -70,13 +80,15 @@ To install this playbook, just copy/import this playbook or raw file into your f
 ```YAML
 # From inventory
 ---
-all vars from to put/from your inventory
+# all vars from to put/from your inventory
+# see tests/inventory/group_var for all groups and vars.
 ```
 
 ```YAML
 # From AWX / Tower
 ---
-all vars from to put/from AWX / Tower
+tower_env: "local"
+
 ```
 
 ## Architectural Decisions Records
@@ -86,6 +98,8 @@ Here you can put your change to keep a trace of your work and decisions.
 ### 2023-09-23: First Init
 
 * First init of this playbook with the bootstrap_playbook playbook by Lord Robin Crombez
+* Playbook deploy PiHole and configure CNAME, AAAA and severals options, see role documentation
+* Its possible to set multiple PiHole and build a cascade DNS cluster / service (externalise vars for CNAME and AAAA)
 
 ## Authors
 
@@ -95,3 +109,4 @@ Here you can put your change to keep a trace of your work and decisions.
 
 * [Ansible playbook documentation](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_playbooks.html)
 * [Ansible Molecule documentation](https://molecule.readthedocs.io/)
+* [labocbz.install_pihole](https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Install-PiHole.git)
