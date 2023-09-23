@@ -1,0 +1,5 @@
+---
+- name: "Include labocbz.deploy_pihole playbook"
+  tags:
+      - "labocbz.deploy_pihole"
+  ansible.builtin.import_playbook: "../../playbook.yml"
