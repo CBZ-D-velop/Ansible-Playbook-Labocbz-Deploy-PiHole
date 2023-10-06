@@ -101,6 +101,13 @@ Here you can put your change to keep a trace of your work and decisions.
 * Playbook deploy PiHole and configure CNAME, AAAA and severals options, see role documentation
 * Its possible to set multiple PiHole and build a cascade DNS cluster / service (externalise vars for CNAME and AAAA)
 
+### 2023-10-06: New CICD, new Images
+
+* New CI/CD scenario name
+* Molecule now use remote Docker image by Lord Robin Crombez
+* Molecule now use custom Docker image in CI/CD by env vars
+* New CICD with needs and optimization
+
 ## Authors
 
 * Lord Robin Crombez
