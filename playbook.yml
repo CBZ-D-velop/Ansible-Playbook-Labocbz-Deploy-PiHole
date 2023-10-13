@@ -1,6 +1,6 @@
 ---
 - name: "Deploy PiHole"
-  hosts: "{{ tower_env | default([]) }}:&PIHOLE"
+  hosts: "{{ tower_env | default([]) }}"
   gather_facts: true
   strategy: free
   become: true
