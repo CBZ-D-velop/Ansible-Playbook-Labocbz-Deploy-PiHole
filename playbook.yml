@@ -8,29 +8,131 @@
   become_user: root
 
   tasks:
-    - name: "Include labocbz.install_pihole"
-      tags:
-        - "labocbz.install_pihole"
-      vars:
-        install_pihole_webpassword: "{{ inv_install_pihole_webpassword }}"
-        install_pihole_interface: "{{ inv_install_pihole_interface }}"
-        install_pihole_ipv4_address: "{{ inv_install_pihole_ipv4_address }}"
-        install_pihole_query_logging: "{{ inv_install_pihole_query_logging }}"
-        install_pihole_install_web: "{{ inv_install_pihole_install_web }}"
-        install_pihole_dnsmasq_listening: "{{ inv_install_pihole_dnsmasq_listening }}"
-        install_pihole_dns_1: "{{ inv_install_pihole_dns_1 }}"
-        install_pihole_dns_2: "{{ inv_install_pihole_dns_2 }}"
-        install_pihole_dns_fqdn_required: "{{ inv_install_pihole_dns_fqdn_required }}"
-        install_pihole_dns_bogus_priv: "{{ inv_install_pihole_dns_bogus_priv }}"
-        install_pihole_dnssec: "{{ inv_install_pihole_dnssec }}"
-        install_pihole_temperatureunit: "{{ inv_install_pihole_temperatureunit }}"
-        install_pihole_webuiboxedlayout: "{{ inv_install_pihole_webuiboxedlayout }}"
-        install_pihole_api_exclude_domains: "{{ inv_install_pihole_api_exclude_domains }}"
-        install_pihole_api_exclude_clients: "{{ inv_install_pihole_api_exclude_clients }}"
-        install_pihole_api_query_logs_show: "{{ inv_install_pihole_api_query_logs_show }}"
-        install_pihole_api_privacy_mode: "{{ inv_install_pihole_api_privacy_mode }}"
-        install_pihole_aaaa_list: "{{ inv_install_pihole_aaaa_list }}"
-        install_pihole_cname_list: "{{ inv_install_pihole_cname_list }}"
-        install_pihole_adlists: "{{ inv_install_pihole_adlists }}"
-      ansible.builtin.include_role:
-        name: "labocbz.install_pihole"
+    - name: "Install PiHole"
+      when: inv_install_pihole | default(false)
+      block:
+        - name: "Include labocbz.prepare_host"
+          tags:
+            - "labocbz.prepare_host"
+          ansible.builtin.include_role:
+            name: "labocbz.prepare_host"
+
+        - name: "Include labocbz.install_pihole"
+          tags:
+            - "labocbz.install_pihole"
+          vars:
+            install_pihole_webpassword: "{{ inv_install_pihole_webpassword }}"
+            install_pihole_interface: "{{ inv_install_pihole_interface }}"
+            install_pihole_ipv4_address: "{{ inv_install_pihole_ipv4_address }}"
+            install_pihole_query_logging: "{{ inv_install_pihole_query_logging }}"
+            install_pihole_install_web: "{{ inv_install_pihole_install_web }}"
+            install_pihole_dnsmasq_listening: "{{ inv_install_pihole_dnsmasq_listening }}"
+            install_pihole_dns_1: "{{ inv_install_pihole_dns_1 }}"
+            install_pihole_dns_2: "{{ inv_install_pihole_dns_2 }}"
+            install_pihole_dns_fqdn_required: "{{ inv_install_pihole_dns_fqdn_required }}"
+            install_pihole_dns_bogus_priv: "{{ inv_install_pihole_dns_bogus_priv }}"
+            install_pihole_dnssec: "{{ inv_install_pihole_dnssec }}"
+            install_pihole_temperatureunit: "{{ inv_install_pihole_temperatureunit }}"
+            install_pihole_webuiboxedlayout: "{{ inv_install_pihole_webuiboxedlayout }}"
+            install_pihole_api_exclude_domains: "{{ inv_install_pihole_api_exclude_domains }}"
+            install_pihole_api_exclude_clients: "{{ inv_install_pihole_api_exclude_clients }}"
+            install_pihole_api_query_logs_show: "{{ inv_install_pihole_api_query_logs_show }}"
+            install_pihole_api_privacy_mode: "{{ inv_install_pihole_api_privacy_mode }}"
+            install_pihole_aaaa_list: "{{ inv_install_pihole_aaaa_list }}"
+            install_pihole_cname_list: "{{ inv_install_pihole_cname_list }}"
+            install_pihole_adlists: "{{ inv_install_pihole_adlists }}"
+          ansible.builtin.include_role:
+            name: "labocbz.install_pihole"
+
+- name: "Install Apache2"
+  hosts: "{{ tower_env | default([]) }}"
+  gather_facts: true
+  remote_user: root
+  strategy: free
+  become: true
+  become_method: sudo
+  become_user: root
+  tags:
+    - "labocbz.install_apache"
+
+  tasks:
+    - name: "Install Apache2"
+      when: inv_install_apache | default(false)
+      block:
+        - name: "Include labocbz.prepare_host"
+          tags:
+            - "labocbz.prepare_host"
+          vars:
+            prepare_host_packages_installed: 
+              - "iptables"
+          ansible.builtin.include_role:
+            name: "labocbz.prepare_host"
+
+        - name: "Include labocbz.add_certificates"
+          tags:
+            - "labocbz.add_certificates"
+          loop: "{{ inv_add_apache_confs_configurations_cert_bundles }}"
+          loop_control:
+            loop_var: bundle
+          when: inv_add_apache_confs_configurations_cert_bundles is defined
+          vars:
+            add_certificates_bundle_name: "{{ bundle.name }}"
+            add_certificates_bundle_type: "{{ bundle.type }}"
+            add_certificates_bundle_src: "{{ bundle.src }}"
+            add_certificates_bundle_dest: "{{ bundle.dest }}"
+            add_certificates_bundle_src_user: "{{ bundle.src_user }}"
+            add_certificates_bundle_src_password: "{{ bundle.src_password }}"
+            add_certificates_bundle_dest_user: "{{ bundle.dest_user }}"
+            add_certificates_bundle_dest_group: "{{ bundle.dest_group }}"
+            add_certificates_bundle_dest_mode: "{{ bundle.dest_mode }}"
+          ansible.builtin.include_role:
+            name: "labocbz.add_certificates"
+
+        - name: "Include labocbz.install_apache"
+          tags:
+            - "labocbz.install_apache"
+          vars:
+            install_apache_https_listen_port: "{{ inv_install_apache_https_listen_port }}"
+            install_apache_http_listen_port: "{{ inv_install_apache_http_listen_port }}"
+            install_apache_modules: "{{ inv_install_apache_modules }}"
+            install_apache_enable_qos: "{{ inv_install_apache_enable_qos }}"
+            install_apache_enable_security: "{{ inv_install_apache_enable_security }}"
+            install_apache_security_core_version: "{{ inv_install_apache_security_core_version }}"
+            install_apache_remove_all_vhosts: "{{ inv_install_apache_remove_all_vhosts }}"
+            install_apache_loglevel: "{{ inv_install_apache_loglevel }}"
+            install_apache_security_version: "{{ inv_install_apache_security_version }}"
+            install_apache_enable_evasive: "{{ inv_install_apache_enable_evasive }}"
+            install_apache_enable_pagespeed: "{{ inv_install_apache_enable_pagespeed }}"
+            install_apache_enable_prefork: "{{ inv_install_apache_enable_prefork }}"
+          ansible.builtin.include_role:
+            name: "labocbz.install_apache"
+
+        - name: "Include labocbz.add_apache_confs"
+          tags:
+            - "labocbz.add_apache_confs"
+          vars:
+            add_apache_confs_http_listen_port: "{{ inv_add_apache_confs_http_listen_port }}"
+            add_apache_confs_https_listen_port: "{{ inv_add_apache_confs_https_listen_port }}"
+            add_apache_confs_ldap_url: "{{ inv_add_apache_confs_ldap_url }}"
+            add_apache_confs_ldap_port: "{{ inv_add_apache_confs_ldap_port }}"
+            add_apache_confs_ldap_dc: "{{ inv_add_apache_confs_ldap_dc }}"
+            add_apache_confs_auth_ldap_url: "{{ inv_add_apache_confs_auth_ldap_url }}"
+            add_apache_confs_custom_ldap_base_header: "{{ inv_add_apache_confs_custom_ldap_base_header }}"
+            add_apache_confs_webmaster: "{{ inv_add_apache_confs_webmaster }}"
+            add_apache_confs_request_body: "{{ inv_add_apache_confs_request_body }}"
+            add_apache_confs_security_body_limit: "{{ inv_add_apache_confs_security_body_limit }}"
+            add_apache_confs_ssl_files_path: "{{ inv_add_apache_confs_ssl_files_path }}"
+            add_apache_confs_conf_path: "{{ inv_add_apache_confs_conf_path }}"
+            add_apache_confs_base_document_root: "{{ inv_add_apache_confs_base_document_root }}"
+            add_apache_confs_configurations: "{{ inv_add_apache_confs_configurations }}"
+          ansible.builtin.include_role:
+            name: "labocbz.add_apache_confs"
+
+        - name: "Block all trafic from other hosts on port 80 (disable acces to PiHole without Apache2)"
+          ansible.builtin.iptables:
+            chain: "INPUT"
+            protocol: "tcp"
+            destination_port: 80
+            jump: "DROP"
+            source: "! 127.0.0.1"
+            comment: "Disable default PiHole web interface"
