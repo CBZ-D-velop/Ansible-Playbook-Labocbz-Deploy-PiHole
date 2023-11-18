@@ -2,7 +2,6 @@
 - name: "Deploy PiHole"
   hosts: "{{ tower_env | default([]) }}"
   gather_facts: true
-  strategy: free
   become: true
   become_method: sudo
   become_user: root
@@ -11,12 +10,6 @@
     - name: "Install PiHole"
       when: inv_install_pihole | default(false)
       block:
-        - name: "Include labocbz.prepare_host"
-          tags:
-            - "labocbz.prepare_host"
-          ansible.builtin.include_role:
-            name: "labocbz.prepare_host"
-
         - name: "Include labocbz.install_pihole"
           tags:
             - "labocbz.install_pihole"
@@ -62,9 +55,6 @@
         - name: "Include labocbz.prepare_host"
           tags:
             - "labocbz.prepare_host"
-          vars:
-            prepare_host_packages_installed: 
-              - "iptables"
           ansible.builtin.include_role:
             name: "labocbz.prepare_host"
 
