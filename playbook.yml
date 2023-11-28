@@ -118,6 +118,14 @@
           ansible.builtin.include_role:
             name: "labocbz.add_apache_confs"
 
+        - name: "Include labocbz.add_logrotate_confs"
+          tags:
+            - "labocbz.add_logrotate_confs"
+          vars:
+            logrotate_configurations: "{{ inv_logrotate_configurations_apache }}"
+          ansible.builtin.include_role:
+            name: "labocbz.add_logrotate_confs"
+
         - name: "Block all trafic from other hosts on port 80 (disable acces to PiHole without Apache2)"
           ansible.builtin.iptables:
             chain: "INPUT"
