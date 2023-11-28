@@ -1,5 +1,4 @@
 ---
-inv_install_pihole: true
 
 inv_install_pihole_webpassword: "admin"
 inv_install_pihole_interface: "{{ hostvars[ansible_hostname]['ansible_default_ipv4']['interface'] }}"

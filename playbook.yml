@@ -2,7 +2,6 @@
 - name: "Deploy PiHole"
   hosts: "{{ tower_env | default([]) }}"
   gather_facts: true
-  strategy: free
   become: true
   become_method: sudo
   become_user: root
@@ -11,12 +10,6 @@
     - name: "Install PiHole"
       when: inv_install_pihole | default(false)
       block:
-        - name: "Include labocbz.prepare_host"
-          tags:
-            - "labocbz.prepare_host"
-          ansible.builtin.include_role:
-            name: "labocbz.prepare_host"
-
         - name: "Include labocbz.install_pihole"
           tags:
             - "labocbz.install_pihole"
@@ -62,9 +55,6 @@
         - name: "Include labocbz.prepare_host"
           tags:
             - "labocbz.prepare_host"
-          vars:
-            prepare_host_packages_installed: 
-              - "iptables"
           ansible.builtin.include_role:
             name: "labocbz.prepare_host"
 
@@ -127,6 +117,14 @@
             add_apache_confs_configurations: "{{ inv_add_apache_confs_configurations }}"
           ansible.builtin.include_role:
             name: "labocbz.add_apache_confs"
+
+        - name: "Include labocbz.add_logrotate_confs"
+          tags:
+            - "labocbz.add_logrotate_confs"
+          vars:
+            logrotate_configurations: "{{ inv_logrotate_configurations_apache }}"
+          ansible.builtin.include_role:
+            name: "labocbz.add_logrotate_confs"
 
         - name: "Block all trafic from other hosts on port 80 (disable acces to PiHole without Apache2)"
           ansible.builtin.iptables:
