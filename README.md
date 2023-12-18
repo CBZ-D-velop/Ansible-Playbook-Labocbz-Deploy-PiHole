@@ -117,6 +117,12 @@ Here you can put your change to keep a trace of your work and decisions.
 * Molecule now use custom Docker image in CI/CD by env vars
 * New CICD with needs and optimization
 
+### 2023-12-18: System Users
+
+* System users handled
+* Added log rotation for Apache2
+* Fix default install
+
 ## Authors
 
 * Lord Robin Crombez
