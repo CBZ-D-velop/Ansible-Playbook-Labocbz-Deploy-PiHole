@@ -32,7 +32,7 @@ inv_install_apache_security_core_version: "3.3.0"
 inv_install_apache_security_version: "3.0.10"
 inv_install_apache_remove_all_vhosts: true
 
-inv_logrotate_configurations_apache:
+inv_logrotate_apache_configurations:
   - "apache2"
   - "modsecurity"
 
