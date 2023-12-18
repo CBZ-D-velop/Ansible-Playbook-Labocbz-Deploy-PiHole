@@ -8,12 +8,6 @@
     #- name: "Include cryptographic content var file"
     #  ansible.builtin.include_vars: "../../tests/certs/main.yml"
 
-    - name: "Include labocbz.prepare_host"
-      tags:
-        - "labocbz.prepare_host"
-      ansible.builtin.include_role:
-        name: "labocbz.prepare_host"
-
     - name: "Gather facts from all hosts"
       delegate_to: "{{ item }}"
       delegate_facts: true
@@ -33,6 +27,14 @@
   hosts: "all:&APACHE2"
   gather_facts: true
   tasks:
+
+    - name: "Include labocbz.prepare_host"
+      tags:
+        - "labocbz.prepare_host"
+      vars:
+        prepare_host_apache_system_users: "{{ inv_prepare_host_apache_system_users }}"
+      ansible.builtin.include_role:
+        name: "labocbz.prepare_host"
 
     - name: "Import cryptographic content if needed (cert)"
       loop: "{{ inv_add_apache_confs_configurations_cert_bundles }}"
