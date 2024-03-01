@@ -1,34 +1,34 @@
 ---
 inv_install_pihole: true
-inv_install_pihole_force_install: true
 
-inv_install_pihole_webpassword: "admin"
-inv_install_pihole_interface: "{{ hostvars[ansible_hostname]['ansible_default_ipv4']['interface'] }}"
-inv_install_pihole_ipv4_address: "{{ hostvars[ansible_hostname]['ansible_default_ipv4']['address'] }}/{{ hostvars[ansible_hostname]['ansible_default_ipv4']['netmask'] }}"
-inv_install_pihole_query_logging: true
-inv_install_pihole_install_web: true
-inv_install_pihole_dnsmasq_listening: "single"
-inv_install_pihole_dns_1: "1.1.1.1"
-inv_install_pihole_dns_2: "1.0.0.1"
-inv_install_pihole_dns_fqdn_required: true
-inv_install_pihole_dns_bogus_priv: true
-inv_install_pihole_dnssec: true
-inv_install_pihole_temperatureunit: "C"
-inv_install_pihole_webuiboxedlayout: "traditional"
-inv_install_pihole_api_exclude_domains: ""
-inv_install_pihole_api_exclude_clients: ""
-inv_install_pihole_api_query_logs_show: "all"
-inv_install_pihole_api_privacy_mode: false
+inv_install_pihole__webpassword: "admin"
+inv_install_pihole__interface: "{{ hostvars[ansible_hostname]['ansible_default_ipv4']['interface'] }}"
+inv_install_pihole__ipv4_address: "{{ hostvars[ansible_hostname]['ansible_default_ipv4']['address'] }}/{{ hostvars[ansible_hostname]['ansible_default_ipv4']['netmask'] }}"
+inv_install_pihole__query_logging: true
+inv_install_pihole__install_web: true
+inv_install_pihole__dnsmasq_listening: "single"
+inv_install_pihole__dns_1: "1.1.1.1"
+inv_install_pihole__dns_2: "1.0.0.1"
+inv_install_pihole__dns_fqdn_required: true
+inv_install_pihole__dns_bogus_priv: true
+inv_install_pihole__dnssec: true
+inv_install_pihole__temperatureunit: "C"
+inv_install_pihole__webuiboxedlayout: "traditional"
+inv_install_pihole__api_exclude_domains: ""
+inv_install_pihole__api_exclude_clients: ""
+inv_install_pihole__api_query_logs_show: "all"
+inv_install_pihole__api_privacy_mode: false
+inv_install_pihole__force_install: false
 
-inv_install_pihole_aaaa_list:
+inv_install_pihole__aaaa_list:
   - domain: "{{ ansible_hostname }}"
     ip: "{{ hostvars[ansible_hostname]['ansible_default_ipv4']['address'] }}"
 
-inv_install_pihole_cname_list:
+inv_install_pihole__cname_list:
   - domain: "pihole.local"
     target: "{{ ansible_hostname }}"
 
-inv_install_pihole_adlists:
+inv_install_pihole__adlists:
   - "https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt"
   - "https://adaway.org/hosts.txt"
   - "https://v.firebog.net/hosts/AdguardDNS.txt"

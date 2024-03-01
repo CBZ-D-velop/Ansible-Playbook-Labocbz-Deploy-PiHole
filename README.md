@@ -89,14 +89,12 @@ To install this playbook, just copy/import this playbook or raw file into your f
 ```YAML
 # From inventory
 ---
-# all vars from to put/from your inventory
-# see tests/inventory/group_var for all groups and vars.
+
 ```
 
 ```YAML
 # From AWX / Tower
 ---
-tower_env: "local"
 
 ```
 
@@ -122,6 +120,12 @@ Here you can put your change to keep a trace of your work and decisions.
 * System users handled
 * Added log rotation for Apache2
 * Fix default install
+
+### 2024-03-01: Remastered
+
+* Imported new CICD
+* Rework global on readme
+* Rename of vars __
 
 ## Authors
 
