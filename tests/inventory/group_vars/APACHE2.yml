@@ -30,7 +30,7 @@ inv_install_apache__enable_prefork: true
 
 inv_install_apache__security_core_version: "3.3.0"
 inv_install_apache__security_version: "3.0.10"
-inv_install_apache__remove_all_vhosts: true
+inv_install_apache__remove_all_vhosts: false
 
 inv_add_logrotate_confs__apache_configurations:
   - "apache2"
