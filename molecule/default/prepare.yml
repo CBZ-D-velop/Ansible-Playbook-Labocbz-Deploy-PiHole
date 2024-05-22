@@ -40,7 +40,7 @@
         dest: "/tmp/{{ bundle.name }}.zip"
         owner: "root"
         group: "root"
-        mode: 0700
+        mode: "0700"
 
     - name: "Import cryptographic content if needed (CA)"
       loop: "{{ inv_add_apache_confs__configurations_cert_bundles }}"
@@ -52,4 +52,4 @@
         dest: "/tmp/{{ bundle.name }}"
         owner: "root"
         group: "root"
-        mode: 0700
+        mode: "0700"
