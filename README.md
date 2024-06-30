@@ -31,7 +31,7 @@ The inclusion of an Ansible playbook simplifies the entire process, from install
 
 ## Deployment diagramm
 
-![](./assets/Ansible-Playbook-Labocbz-Deploy-Pihole.drawio.svg)
+![Ansible-Playbook-Labocbz-Deploy-Pihole](./assets/Ansible-Playbook-Labocbz-Deploy-Pihole.drawio.svg)
 
 Here is a potential deployment scenario using the playbook. We can observe that Pihole is installed on the same host as Apache2, which then functions as an SSL/TLS reverse proxy, WAF, QoS, Auth, etc. Pihole is primarily used for administering a DNS server, which clioent connect through the default port for DNS and cannot be included in the reverse proxy.
 
@@ -42,7 +42,6 @@ Here is a potential deployment scenario using the playbook. We can observe that 
 You have to run multiples tests. *tests with an # are mandatory*
 
 ```MARKDOWN
-# lint
 # syntax
 # converge
 # idempotence
@@ -67,7 +66,6 @@ yamllint -c ./.yamllint .
 ansible-lint --config=./.ansible-lint .
 
 # Execute and test your playbook
-molecule lint
 molecule create
 molecule list
 molecule converge
@@ -126,6 +124,14 @@ Here you can put your change to keep a trace of your work and decisions.
 * Imported new CICD
 * Rework global on readme
 * Rename of vars __
+
+### 2024-05-19: New CI
+
+* Added Markdown lint to the CICD
+* Rework all Docker images
+* Change CICD vars convention
+* New workers
+* Removed all automation based on branch
 
 ## Authors
 
